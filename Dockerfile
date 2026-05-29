@@ -1,18 +1,6 @@
-FROM node:20-slim
+FROM atendai/evolution-api:v2.2.3
 
-RUN apt-get update && apt-get install -y \
-  git \
-  openssl \
-  ca-certificates \
-  && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /evolution-api
-
-RUN git clone --depth 1 --branch 2.2.3 https://github.com/EvolutionAPI/evolution-api.git . \
-  && cp .env.example .env \
-  && npm install --legacy-peer-deps \
-  && npm run build
+ENV DATABASE_PROVIDER=postgresql
+ENV DATABASE_CONNECTION_URI=$DATABASE_URL
 
 EXPOSE 8080
-
-CMD ["npm", "run", "start:prod"]
