@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /evolution-api
 
-RUN git clone --depth 1 https://github.com/EvolutionAPI/evolution-api.git . \
+RUN git clone --depth 1 --branch 2.2.3 https://github.com/EvolutionAPI/evolution-api.git . \
+  && cp .env.example .env \
   && npm install --legacy-peer-deps \
   && npm run build
 
