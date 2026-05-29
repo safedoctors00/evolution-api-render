@@ -1,14 +1,17 @@
 FROM node:20-slim
 
 RUN apt-get update && apt-get install -y \
+  git \
   openssl \
-    ca-certificates \
-      && rm -rf /var/lib/apt/lists/*
+  ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 
-      WORKDIR /app
+WORKDIR /evolution-api
 
-      RUN npm install -g @evolution-api/evolution-api@2.1.1
+RUN git clone --depth 1 --branch v2.1.1 https://github.com/EvolutionAPI/evolution-api.git . \
+  && npm install --legacy-peer-deps \
+  && npm run build
 
-      EXPOSE 8080
+EXPOSE 8080
 
-      CMD ["node", "/usr/local/lib/node_modules/@evolution-api/evolution-api/dist/main.js"]
+CMD ["npm", "run", "start:prod"]
